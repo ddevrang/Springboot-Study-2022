@@ -8,4 +8,8 @@ import lombok.Getter;
 public class MovieResponseDto {
     private String title;
     private float userRating;
+    private String image;
+    private String subtitle;
+    private String director;
+    private int pubDate;
 }

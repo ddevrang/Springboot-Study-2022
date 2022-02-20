@@ -46,6 +46,10 @@ public class MovieRepositoryImpl implements MovieRepository {
                 .map(m -> Movie.builder()
                         .title(m.getTitle())
                         .userRating(m.userRating)
+                        .image(m.image)
+                        .subtitle(m.subtitle)
+                        .director(m.director)
+                        .pubDate(m.pubDate)
                         .build())
                 .collect(Collectors.toList());
     }
@@ -59,6 +63,10 @@ public class MovieRepositoryImpl implements MovieRepository {
         public static class Item {
             String title;
             Float userRating;
+            private String image;
+            private String subtitle;
+            private String director;
+            private int pubDate;
         }
     }
 }
