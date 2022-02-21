@@ -4,6 +4,7 @@ import com.example.study.dto.MovieResponseDto;
 import com.example.study.exception.EmptyDataException;
 import com.example.study.exception.ErrorCode;
 import com.example.study.model.Movie;
+import com.example.study.model.MovieGroup;
 import com.example.study.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,13 +23,20 @@ public class MovieService {
 
         List<Movie> movieList = movieRepository.findByTitle(title);
 
-        if (movieList.isEmpty()) {
+        MovieGroup movieGroup = new MovieGroup(movieList);
+        List<Movie> movieGroupList = movieGroup.sortByUserRating();
+
+//        if (movieList.isEmpty()) {
+//            throw new EmptyDataException(ErrorCode.NOT_FOUND);
+//        }
+
+        if (movieGroupList.isEmpty()) {
             throw new EmptyDataException(ErrorCode.NOT_FOUND);
         }
 
-        return movieList.stream()
-                .filter(m -> m.getUserRating() != 0.0f)
-                .sorted(Comparator.comparing(Movie::getUserRating, Comparator.reverseOrder()))
+        return movieGroupList.stream()
+//                .filter(m -> m.getUserRating() != 0.0f)
+//                .sorted(Comparator.comparing(Movie::getUserRating, Comparator.reverseOrder()))
                 .map(m -> MovieResponseDto.builder()
                         .title(m.getTitle())
                         .userRating(m.getUserRating())
