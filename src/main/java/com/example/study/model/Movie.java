@@ -19,7 +19,7 @@ public class Movie {
     private String director;
     private int pubDate;
 
-    public boolean isThisYearMovie(int pubDate) {
+    public boolean isThisYearMovie() {
 
         int thisYear = LocalDate.now().getYear();
 
