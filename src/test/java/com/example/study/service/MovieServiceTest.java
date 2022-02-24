@@ -1,9 +1,9 @@
-package com.example.study;
+package com.example.study.service;
 
 import com.example.study.dto.MovieResponseDto;
+import com.example.study.exception.EmptyDataException;
 import com.example.study.model.Movie;
 import com.example.study.repository.Impl.MovieRepositoryImpl;
-import com.example.study.service.MovieService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,18 +12,15 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class MovieServiceTest {
-
-    /*TODO:
-        1.평점이 높은 순서로 정렬
-        2.평점이 0 인 경우는 제외
-     */
 
     private MovieService movieService;
 
@@ -62,6 +59,20 @@ class MovieServiceTest {
         //then
         assertEquals(expectedMovieSize, actualList.size());
 
+    }
+
+    @Test
+    @DisplayName("영화 검색 조건에 해당하는 데이터가 전혀 없을 때, 예외처리가 발생하는지")
+    void empty_data_exception_check() {
+
+        //given
+        Mockito.when(movieRepository.findByTitle(any())).thenReturn(Collections.emptyList());
+        movieService = new MovieService(movieRepository);
+
+        //when, then
+        assertThrows(EmptyDataException.class, () -> {
+            movieService.search("테스트");
+        });
     }
 
 
